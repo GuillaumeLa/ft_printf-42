@@ -45,18 +45,38 @@ int	ft_putnbr(int nb)
     }
 	if (nb < 0)
 	{
-		if (!b)
-        {
-            write(1,"-",1);
-            count++;
-        }
-		a = -a;
+            if (!b)
+            {
+                write(1,"-",1);
+                count++;
+            }
+            a = -a;
 	}
 	ft_putchar(a + '0');
     count++;
     return(count);
 }
+int	ft_uputnbr(int nb)
+{
+	int	a;
+	int	b;
+    int count;
 
+	a = nb % 10;
+	b = nb / 10;
+    count = 0;
+	if (b)
+    {
+		count = ft_putnbr(b);
+    }
+	if (nb < 0)
+	{
+        return(0);
+	}
+	ft_putchar(a + '0');
+    count++;
+    return(count);
+}
 
 int ft_parse_conversions(char conv_sign, va_list args)
 {
@@ -73,7 +93,7 @@ int ft_parse_conversions(char conv_sign, va_list args)
     else if(conv_sign == 'i')
         char_count += ft_putnbr((int)va_arg(args,int));
     else if(conv_sign == 'u')
-        char_count += ft_putnbr((unsigned int)va_arg(args,unsigned int));
+        char_count += ft_uputnbr((unsigned int)va_arg(args,unsigned int));
     // else if(conv_sign == 'x')
         //ft_putnbr_base((int)va_arg(args,int),"123456789abcdef");
     // else if(conv_sign == 'X')
@@ -106,10 +126,10 @@ int ft_printf(const char *str, ...)
     }
     return(char_count);
 }
-// int main()
-// {
-//     int carotte = -4565456;
-//    ft_printf("\n%i\n",ft_printf("%i",carotte));
-//     ft_printf("\n%i\n",printf("%i", carotte));
-//     return(0);
-// }
+int main()
+{
+    int carotte = 4565456;
+    ft_printf("%u \n",carotte);
+    printf("%u", carotte);
+    return(0);
+}
