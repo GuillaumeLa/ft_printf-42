@@ -9,7 +9,7 @@
 /*   Updated: 2023/11/20 08:50:38 by glabaden         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
+//unsigned long long 
 #include "ft_printf.h"
 
 int ft_putchar(char c)
@@ -21,7 +21,7 @@ int ft_putstr(char *str)
 {
     int i = 0;
     if(!str)
-        return (0);
+        return (ft_putstr("(null)"),6);
     while(str[i])
     {
         write(1,&str[i],1);
@@ -34,6 +34,32 @@ int	ft_putnbr(int nb)
 {
 	int	a;
 	int	b;
+    int count;
+
+	a = nb % 10;
+	b = nb / 10;
+    count = 0;
+	if (b)
+    {
+		count = ft_putnbr(b);
+    }
+	if (nb < 0)
+	{
+            if (!b)
+            {
+                write(1,"-",1);
+                count++;
+            }
+            a = -a;
+	}
+	ft_putchar(a + '0');
+    count++;
+    return(count);
+}
+int	ft_uputnbr(unsigned int nb)
+{
+	unsigned int	a;
+	unsigned int	b;
     int count;
 
 	a = nb % 10;
@@ -116,11 +142,24 @@ void	ft_Xputnbr(unsigned int nb)
 
 int try(unsigned int nb)
 {
+    if(!nb)
+        return(ft_putchar('0'));
     ft_xputnbr(nb);
     return(ft_hex_len(nb));
 }
+int try_ptr(void *nb)
+{
+    if(!nb)
+        return(write(1,"(nil)",5),5);
+    write(1,"0x",2);
+    ft_xputnbr((long unsigned int)nb);
+    return(2 + ft_hex_len(((long unsigned int)nb)));
+
+}
 int trytwo(unsigned int nb)
 {
+    if(!nb)
+        return(ft_putchar('0'));
     ft_Xputnbr(nb);
     return(ft_hex_len(nb));
 }
@@ -135,13 +174,17 @@ int ft_parse_conversions(char conv_sign, va_list args)
         char_count += ft_putchar((char)va_arg(args,int));
     else if(conv_sign == 's')
         char_count += ft_putstr((char *)va_arg(args,char *));
-    // else if(conv_sign == 'p')
+    else if(conv_sign == 'p')
+    {
+        char_count += try_ptr(va_arg(args,void *));
+
+    }
     else if(conv_sign == 'd')
         char_count += ft_putnbr(va_arg(args,int));
     else if(conv_sign == 'i')
         char_count += ft_putnbr(va_arg(args,int));
     else if(conv_sign == 'u')
-        char_count += trytwo(va_arg(args,unsigned int));
+        char_count += ft_uputnbr(va_arg(args,unsigned int));
     else if(conv_sign == 'x')
         char_count += try(va_arg(args,unsigned int));
     else if(conv_sign == 'X')
@@ -177,8 +220,8 @@ int ft_printf(const char *str, ...)
 }
 // int main()
 // {
-//     int carotte = 4565456;
-//     ft_printf("%u \n",carotte);
-//     printf("%u", carotte);
+//     char *lol = "lol";
+//     ft_printf("%i \n", ft_printf("%s",lol));
+
 //     return(0);
 // }
