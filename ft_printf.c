@@ -221,7 +221,7 @@ int ft_printf(const char *str, ...)
 // int main()
 // {
 //     char *lol = "lol";
-//     ft_printf("%i \n", ft_printf("%s",lol));
+//     ft_printf("%5");
 
 //     return(0);
 // }
