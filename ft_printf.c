@@ -56,27 +56,75 @@ int	ft_putnbr(int nb)
     count++;
     return(count);
 }
-int	ft_uputnbr(int nb)
+int    ft_hex_len(unsigned    int num)
 {
-	int	a;
-	int	b;
-    int count;
+    int    len;
 
-	a = nb % 10;
-	b = nb / 10;
-    count = 0;
-	if (b)
+    len = 0;
+    while (num != 0)
     {
-		count = ft_putnbr(b);
+        len++;
+        num = num / 16;
     }
-	if (nb < 0)
-	{
-        return(0);
-	}
-	ft_putchar(a + '0');
-    count++;
-    return(count);
+    return (len);
 }
+
+void	ft_xputnbr(unsigned int nb)
+{
+    if (nb >= 16)
+    {
+        ft_xputnbr(nb / 16);
+        ft_xputnbr(nb % 16);
+    }
+    else
+    {
+        if (nb <= 9)
+        {
+            ft_putchar((nb + '0'));
+        }
+        else
+        {
+
+            ft_putchar((nb - 10 + 'a'));
+        }
+    }
+}
+
+void	ft_Xputnbr(unsigned int nb)
+{
+    if (nb >= 16)
+    {
+        ft_Xputnbr(nb / 16);
+        ft_Xputnbr(nb % 16);
+    }
+    else
+    {
+        if (nb <= 9)
+        {
+            ft_putchar((nb + '0'));
+            
+        }
+        else
+        {
+
+            ft_putchar((nb - 10 + 'A'));
+            
+        }
+    }
+
+}
+
+int try(unsigned int nb)
+{
+    ft_xputnbr(nb);
+    return(ft_hex_len(nb));
+}
+int trytwo(unsigned int nb)
+{
+    ft_Xputnbr(nb);
+    return(ft_hex_len(nb));
+}
+
 
 int ft_parse_conversions(char conv_sign, va_list args)
 {
@@ -89,16 +137,17 @@ int ft_parse_conversions(char conv_sign, va_list args)
         char_count += ft_putstr((char *)va_arg(args,char *));
     // else if(conv_sign == 'p')
     else if(conv_sign == 'd')
-        char_count += ft_putnbr((int)va_arg(args,int));
+        char_count += ft_putnbr(va_arg(args,int));
     else if(conv_sign == 'i')
-        char_count += ft_putnbr((int)va_arg(args,int));
+        char_count += ft_putnbr(va_arg(args,int));
     else if(conv_sign == 'u')
-        char_count += ft_uputnbr((unsigned int)va_arg(args,unsigned int));
-    // else if(conv_sign == 'x')
-        //ft_putnbr_base((int)va_arg(args,int),"123456789abcdef");
-    // else if(conv_sign == 'X')
+        char_count += trytwo(va_arg(args,unsigned int));
+    else if(conv_sign == 'x')
+        char_count += try(va_arg(args,unsigned int));
+    else if(conv_sign == 'X')
+        char_count += trytwo(va_arg(args,unsigned int));
     else if(conv_sign == '%')
-        write(1,"%",1);
+        char_count += ft_putchar('%');
     return (char_count);
 
 }
@@ -126,10 +175,10 @@ int ft_printf(const char *str, ...)
     }
     return(char_count);
 }
-int main()
-{
-    int carotte = 4565456;
-    ft_printf("%u \n",carotte);
-    printf("%u", carotte);
-    return(0);
-}
+// int main()
+// {
+//     int carotte = 4565456;
+//     ft_printf("%u \n",carotte);
+//     printf("%u", carotte);
+//     return(0);
+// }
