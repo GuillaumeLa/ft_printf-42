@@ -1,7 +1,7 @@
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-FILES = ft_printf.c
-OFILES = ft_printf.o
+FILES = ft_printf.c ft_utils.c ft_utilshexa.c ft_utilsptr.c
+OFILES = $(FILES:.c=.o)
 NAME=libftprintf.a
 
 
@@ -14,7 +14,7 @@ $(NAME): $(OFILES)
 all: $(NAME) clean
 clean:
 	rm -f $(OFILES) 
-fclean:  
+fclean: clean
 	rm -f $(NAME)
 re: fclean all
 
