@@ -73,15 +73,6 @@ int	ft_uputnbr(unsigned int nb)
 	{
 		count = ft_putnbr(b);
 	}
-	if (nb < 0)
-	{
-		if (!b)
-		{
-			write(1, "-", 1);
-			count++;
-		}
-		a = -a;
-	}
 	ft_putchar(a + '0');
 	count++;
 	return (count);
